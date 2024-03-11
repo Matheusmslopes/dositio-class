@@ -4,8 +4,8 @@ export default async function onRouteHook(app, options) {
     const AuthError = createError('AuthError', 'x-access-token is missing', 401);
     const TokenError = createError('TokenError', 'Invalid Token', 401);
     
-    const logMe = async (request, reply) => {
-        request.log.info(`Request for url: ${request.url}.`);
+    const logMe = async (req, rep) => {
+        req.log.info(`Request for url: ${req.url}.`);
     };
 
     const extractUser = async(req, rep) => {
