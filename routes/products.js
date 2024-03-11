@@ -12,7 +12,7 @@ export default async function products(app, options) {
                 requireAuthentication: true
             }
         }, 
-        async (request, reply) => {
+        async (req, rep) => {
         return products.find();
     });
 
@@ -28,19 +28,19 @@ export default async function products(app, options) {
                 required: ['name', 'qtd']
             }
         }
-    }, async (request, reply) => {
-        let product = request.body;
-        request.log.info(`Including product ${product.name}.`);
+    }, async (req, rep) => {
+        let product = req.body;
+        req.log.info(`Including product ${product.name}.`);
         return product;
     });
 
-    app.get('/products/:id', async (request, reply) => {
-        app.log.info('Produto requisitado> ' + request.params.id);
+    app.get('/products/:id', async (req, rep) => {
+        app.log.info('Produto requisitado> ' + req.params.id);
         return {};
     });
     
-    app.delete('/products/:id', async (request, reply) => {
-        app.log.info('Produto para remover> ' + request.params.id);
+    app.delete('/products/:id', async (req, rep) => {
+        app.log.info('Produto para remover> ' + req.params.id);
         return {};
     });
 }

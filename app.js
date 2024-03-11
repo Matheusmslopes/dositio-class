@@ -33,27 +33,27 @@ export async function build(opts){
     });
 
 
-    app.get('/error', (request, reply) => {
+    app.get('/error', (req, rep) => {
         throw new MyCustomError();
     });
  
 
-    app.setErrorHandler(async (error, request, reply) => {
+    app.setErrorHandler(async (error, req, rep) => {
         const  { validation } = error;
-        request.log.error({ error });
-        reply.code(error.statusCode || 500);
+        req.log.error({ error });
+        rep.code(error.statusCode || 500);
 
         
         return validation ? `Validation Error: ${validation[0].message}.` : 'Internal Server Error';
     });
 
-    app.get('/notfound', async (request, reply) => {
-        request.log.info('Sending to not found handler.');
-        reply.callNotFound();
+    app.get('/notfound', async (req, rep) => {
+        req.log.info('Sending to not found handler.');
+        rep.callNotFound();
     });
 
-    app.setNotFoundHandler(async (request, reply) => {
-        reply.code(404);
+    app.setNotFoundHandler(async (req, rep) => {
+        rep.code(404);
         return 'Resource not found.';
     });
 
