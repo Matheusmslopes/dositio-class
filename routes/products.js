@@ -13,7 +13,7 @@ export default async function products(app, options) {
             }
         }, 
         async (req, rep) => {
-        return products.find();
+        return await products.find().toArray();
     });
 
     app.post('/products', {

@@ -4,10 +4,10 @@ import autoload from '@fastify/autoload';
 import jwt from '@fastify/jwt';
 import mongodb from '@fastify/mongodb';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const MyCustomError = createError('MyCustomError', 'Something stranged happened.', 501);
 
@@ -24,12 +24,15 @@ export async function build(opts){
     });
 
     await app.register(autoload, {
-        dir: join(__dirname, 'hooks'),
-        encapsulate: false
+        dir: path.join(__dirname, 'hooks'),
+        encapsulate: false,
+        ignoreFilter: (path) => {
+            return path.includes('functions');
+        }
     });
 
     await app.register(autoload, {
-        dir: join(__dirname, 'routes')
+        dir: path.join(__dirname, 'routes')
     });
 
 
