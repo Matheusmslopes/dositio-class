@@ -8,7 +8,8 @@ export default async function products(app, options) {
     app.get('/categories', 
         {
             config: {
-                logMe: true
+                logMe: true,
+                requireAuthentication: true
             }
         }, 
         async (req, rep) => {

@@ -30,17 +30,36 @@ export default async function products(app, options) {
         }
     }, async (req, rep) => {
         let product = req.body;
-        req.log.info(`Including product ${product.name}.`);
-        return product;
+
+        await products.insertOne(product);
+
+        return rep.code(201).send();
     });
 
     app.get('/products/:id', async (req, rep) => {
-        app.log.info('Produto requisitado> ' + req.params.id);
-        return {};
+        let id = req.params.id;
+        let product = await products.findOne({_id: new app.mongo.ObjectId(id)});
+        
+        return product;
     });
     
     app.delete('/products/:id', async (req, rep) => {
-        app.log.info('Produto para remover> ' + req.params.id);
-        return {};
+        let id = req.params.id;
+        let product = await products.deleteOne({_id: new app.mongo.ObjectId(id)});
+        
+        return rep.code(204).send();
+    });
+
+    app.put('/products/:id', async (req, rep) => {
+        let id = req.params.id;
+        let product = req.body;
+        await products.updateOne({_id: new app.mongo.ObjectId(id)}, {
+            $set: {
+                name: product.name,
+                qtd: product.qtd
+            }
+        });
+        
+        return rep.code(204).send();
     });
 }
