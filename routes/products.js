@@ -8,8 +8,7 @@ export default async function products(app, options) {
     app.get('/products', 
         {
             config: {
-                logMe: true,
-                requireAuthentication: true
+                logMe: true
             }
         }, 
         async (req, rep) => {
@@ -27,6 +26,9 @@ export default async function products(app, options) {
                 },
                 required: ['name', 'qtd']
             }
+        },
+        config: {
+            requireAuthentication: true
         }
     }, async (req, rep) => {
         let product = req.body;
@@ -43,14 +45,19 @@ export default async function products(app, options) {
         return product;
     });
     
-    app.delete('/products/:id', async (req, rep) => {
+    app.delete('/products/:id', { config: {
+        requireAuthentication: true
+    }}, async (req, rep) => {
         let id = req.params.id;
         let product = await products.deleteOne({_id: new app.mongo.ObjectId(id)});
         
         return rep.code(204).send();
     });
 
-    app.put('/products/:id', async (req, rep) => {
+    app.put('/products/:id', { config: {
+        requireAuthentication: true
+        }
+        },async (req, rep) => {
         let id = req.params.id;
         let product = req.body;
         await products.updateOne({_id: new app.mongo.ObjectId(id)}, {
