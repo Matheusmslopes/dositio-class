@@ -1,9 +1,10 @@
 /** @type{import('fastify').FastifyPluginAsync<>} */
 import createError from '@fastify/error';
-export default async function products(app, options) {
+export default async function categories(app, options) {
     const InvalidProductError = createError('InvalidProductError', 'Produto Inválido.', 400);
 
     const categories = app.mongo.db.collection('categorias');
+    const product = app.mongo.db.collection('products')
 
     app.get('/categories', 
         {
@@ -61,5 +62,20 @@ export default async function products(app, options) {
         });
         
         return rep.code(204).send();
+    });
+
+    app.get('/categories/:id', async (req, rep) => {
+        let id = req.params.id;
+        let category = await categories.findOne({_id: new app.mongo.ObjectId(id)});
+        
+        return category;
+    });
+
+    app.get('/categories/:id/products', async (req, rep) => {
+        let id = req.params.id;
+        let products = await product.find({cat_id: id}).toArray();
+        //let products = await product.find({cat_id: id}).toArray();
+
+        return products;
     });
 }
