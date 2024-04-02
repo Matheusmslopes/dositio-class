@@ -15,6 +15,13 @@ export default async function products(app, options) {
         return await products.find().toArray();
     });
 
+    app.get('/products/:id', async (req, rep) => {
+        let id = req.params.id;
+        let product = await products.findOne({_id: new app.mongo.ObjectId(id)});
+        
+        return product;
+    });
+    
     app.post('/products', {
         schema: {
             body: {
@@ -39,12 +46,6 @@ export default async function products(app, options) {
         return rep.code(201).send();
     });
 
-    app.get('/products/:id', async (req, rep) => {
-        let id = req.params.id;
-        let product = await products.findOne({_id: new app.mongo.ObjectId(id)});
-        
-        return product;
-    });
     
     app.delete('/products/:id', { config: {
         requireAuthentication: true

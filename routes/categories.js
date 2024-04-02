@@ -16,6 +16,21 @@ export default async function categories(app, options) {
         return await categories.find().toArray();
     });
 
+    app.get('/categories/:id', async (req, rep) => {
+        let id = req.params.id;
+        let category = await categories.findOne({_id: new app.mongo.ObjectId(id)});
+        
+        return category;
+    });
+
+    app.get('/categories/:id/products', async (req, rep) => {
+        let id = req.params.id;
+        let products = await product.find({cat_id: id}).toArray();
+        //let products = await product.find({cat_id: id}).toArray();
+
+        return products;
+    });
+
     app.post('/categories', {
         schema: {
             body: {
@@ -62,20 +77,5 @@ export default async function categories(app, options) {
         });
         
         return rep.code(204).send();
-    });
-
-    app.get('/categories/:id', async (req, rep) => {
-        let id = req.params.id;
-        let category = await categories.findOne({_id: new app.mongo.ObjectId(id)});
-        
-        return category;
-    });
-
-    app.get('/categories/:id/products', async (req, rep) => {
-        let id = req.params.id;
-        let products = await product.find({cat_id: id}).toArray();
-        //let products = await product.find({cat_id: id}).toArray();
-
-        return products;
     });
 }

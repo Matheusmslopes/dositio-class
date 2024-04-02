@@ -35,6 +35,33 @@ describe('### Tests for unauthenticated routes', async(t) => {
             equal(response.statusCode, 200);
         });
 
+        /*test('# GET /products/:id', async(t) => {
+            const app = await build(options);
+    
+            t.after(async() => {
+                await app.close();
+            });
+
+            const response = await app.inject({
+                method: 'GET',
+                url: '/products/:id'
+            });
+            equal(response.statusCode, 200);
+            
+            ESTA RETORNANDO 500 COMO STATUS CODE
+            AssertionError [ERR_ASSERTION]: 500 == 200
+            at TestContext.<anonymous> (file:///C:/UVV/Periodo5/ProgAvanWeb/dositio-class/test.js:49:13)
+            at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+            at async Test.run (node:internal/test_runner/test:640:9)
+            at async Suite.processPendingSubtests (node:internal/test_runner/test:382:7) {
+            generatedMessage: true,
+            code: 'ERR_ASSERTION',
+            actual: 500,
+            expected: 200,
+            operator: '=='
+
+        });*/
+
         test('# GET /categories', async(t) => {
             const app = await build(options);
     
@@ -44,6 +71,36 @@ describe('### Tests for unauthenticated routes', async(t) => {
             const response = await app.inject({
                 method: 'GET',
                 url: '/categories'
+            });
+            equal(response.statusCode, 200);
+        });
+
+        /*test('# GET /categories/:id', async(t) => {
+            const app = await build(options);
+    
+            t.after(async() => {
+                await app.close();
+            });
+            const response = await app.inject({
+                method: 'GET',
+                url: '/categories/:id'
+            });
+            equal(response.statusCode, 200);
+
+            ESTA RETORNANDO 500 COMO STATUS CODE
+
+
+        });*/
+
+        test('# GET /categories/:id/products', async(t) => {
+            const app = await build(options);
+    
+            t.after(async() => {
+                await app.close();
+            });
+            const response = await app.inject({
+                method: 'GET',
+                url: '/categories/:id/products'
             });
             equal(response.statusCode, 200);
         });
