@@ -47,19 +47,6 @@ describe('### Tests for unauthenticated routes', async(t) => {
                 url: '/products/:id'
             });
             equal(response.statusCode, 200);
-            
-            ESTA RETORNANDO 500 COMO STATUS CODE
-            AssertionError [ERR_ASSERTION]: 500 == 200
-            at TestContext.<anonymous> (file:///C:/UVV/Periodo5/ProgAvanWeb/dositio-class/test.js:49:13)
-            at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-            at async Test.run (node:internal/test_runner/test:640:9)
-            at async Suite.processPendingSubtests (node:internal/test_runner/test:382:7) {
-            generatedMessage: true,
-            code: 'ERR_ASSERTION',
-            actual: 500,
-            expected: 200,
-            operator: '=='
-
         });*/
 
         test('# GET /categories', async(t) => {

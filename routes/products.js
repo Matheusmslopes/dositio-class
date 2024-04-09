@@ -58,8 +58,7 @@ export default async function products(app, options) {
 
     app.put('/products/:id', { config: {
         requireAuthentication: true
-        }
-        },async (req, rep) => {
+    }}, async (req, rep) => {
         let id = req.params.id;
         let product = req.body;
         await products.updateOne({_id: new app.mongo.ObjectId(id)}, {
