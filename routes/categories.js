@@ -58,7 +58,7 @@ export default async function categories(app, options) {
         requireAuthentication: true
     }}, async (req, rep) => {
         let id = req.params.id;
-        let categories = await categories.deleteOne({_id: new app.mongo.ObjectId(id)});
+        let categorie = await categories.deleteOne({_id: new app.mongo.ObjectId(id)});
         
         return rep.code(204).send();
     });

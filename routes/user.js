@@ -5,7 +5,7 @@ export default async function user(app, options) {
 
     const users = app.mongo.db.collection('users');
     
-    app.post('/users', {
+    app.post('/register', {
         schema: {
             body: {
                 type: 'object',
