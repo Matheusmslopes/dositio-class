@@ -16,8 +16,8 @@ const CreateCategorieTest = {
 }
 
 const CreateUserTest = {
-    name: 'TestUser5',
-    password: 'ABCDe123456'
+    name: 'TestUser6',
+    password: 'ABCDe1234567'
 }
 
 const UpdateProductTest = {
@@ -114,6 +114,21 @@ describe('### Tests for unauthenticated routes', async(t) => {
             const response = await app.inject({
                 method: 'GET',
                 url: '/categories/:id/products'
+            });
+            equal(response.statusCode, 200);
+        });
+
+        test('# POST /auth', async(t) => {
+            const app = await build(options);
+
+            t.after(async() => {
+            await app.close();
+            });
+
+            const response = await app.inject({
+                method: 'POST',
+                url: '/auth',
+                body: CreateUserTest
             });
             equal(response.statusCode, 200);
         });
@@ -252,6 +267,5 @@ describe('### Tests for authenticated routes', async(t) => {
             });
             equal(response.statusCode, 201);
         });
-
     })
 });
