@@ -1,11 +1,12 @@
 import { test, describe} from 'node:test';
 import { equal, deepEqual } from 'node:assert';
 import { build, options } from './app.js';
+import { request } from 'node:http';
 
 const jwtValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWF0aGV1cyIsImlhdCI6MTcxMjY5Nzc4MX0.tb86bidxFw0aVwDm6l7RdXFB7RqxVrCf3bCosif0Fkg'
 
 const CreateProductTest = {
-    name: 'TestProduct7',
+    name: 'TestProduct10',
     qtd: '10',
     cat_id: '6616ca6fc0c1625999b9ef7f'
 }
@@ -16,13 +17,13 @@ const CreateCategorieTest = {
 }
 
 const CreateUserTest = {
-    name: 'TestUser6',
+    name: 'TestUser67',
     password: 'ABCDe1234567'
 }
 
 const UpdateProductTest = {
-    name: 'TestProduct',
-    qtd: '1',
+    name: 'TestProduct700',
+    qtd: '10',
     cat_id: '6616ca6fc0c1625999b9ef7f'
 }
 
@@ -30,6 +31,12 @@ const UpdateCategorieTest = {
     name: 'Testedcategorie',
     img_url: 'https://www.effiliation.com/wp-content/uploads/2018/10/test.png'
     
+}
+
+const AlreadyExists = {
+    name: 'TestProduct',
+    qtd: 100,
+    cat_id: '6616c8ef2550bf9d500d198d'
 }
 
 describe('### Tests for server config', async(t) => {
@@ -134,7 +141,81 @@ describe('### Tests for unauthenticated routes', async(t) => {
         });
    });
     describe('##Bad Request', async(t) => {
+       /* test('# no token', async(t) => {
+            const app = await build(options);
     
+            t.after(async() => {
+                await app.close();
+            });
+            
+            const response = await app.inject({
+                url: '/*',
+                
+            });
+            equal(response.statusCode, 401);
+        });
+
+        test('# invalid token', async(t) => {
+            const app = await build(options);
+    
+            t.after(async() => {
+                await app.close();
+            });
+
+            const response = await app.inject({
+                url: '/*',
+                headers: {
+                    'x-access-token': !jwtValue
+                }
+            });
+            equal(response.statusCode, 401);
+        });
+        test('# Not found', async(t) => {
+            const app = await build(options);
+    
+            t.after(async() => {
+                await app.close();
+            });
+
+            const response = await app.inject({
+                method: 'GET',
+                url: '/notfound'
+            });
+            equal(response.statusCode, 404);
+        });*/
+
+        test('# Already exists', async(t) => {
+            const app = await build(options);
+
+            t.after(async() => {
+            await app.close();
+            });
+
+            const response = await app.inject({
+                method: 'POST',
+                url: '/products',
+                body: AlreadyExists,
+                headers: {
+                    'x-access-token': jwtValue
+                }
+
+            });
+            equal(response.statusCode, 412);
+        });
+
+        test('# Not Implemented', async(t) => {
+            const app = await build(options);
+    
+            t.after(async() => {
+                await app.close();
+            });
+
+            const response = await app.inject({
+                method: 'GET',
+                url: '/error'
+            });
+            equal(response.statusCode, 501);
+        });
     })
 });
 
@@ -167,8 +248,8 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'PUT',
-                url: '/categories/6616caa44a3a76dedb561313',
-                body: CreateCategorieTest,
+                url: '/categories/6616ca5a7c88395ea9a658a9',
+                body: UpdateCategorieTest,
                 headers: {
                     'x-access-token': jwtValue
                 }
@@ -185,7 +266,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'DELETE',
-                url: '/categories/6616d37e4a3b5e53b573b352',
+                url: '/categories/6619742a5eec49ed7f6eabcf',
                 headers: {
                     'x-access-token': jwtValue
                 }
@@ -221,7 +302,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'PUT',
-                url: '/products/6616cd1fa96473170b2db9db',
+                url: '/products/6616d5f4354be05aa2f2f9db',
                 body: UpdateProductTest,
                 headers: {
                     'x-access-token': jwtValue
@@ -240,7 +321,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'DELETE',
-                url: '/products/6616d37e4a3b5e53b573b353',
+                url: '/products/6619742a5eec49ed7f6eabd0',
                 headers: {
                     'x-access-token': jwtValue
                 }
