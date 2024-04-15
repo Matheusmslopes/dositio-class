@@ -6,8 +6,8 @@ import { request } from 'node:http';
 const jwtValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWF0aGV1cyIsImlhdCI6MTcxMjY5Nzc4MX0.tb86bidxFw0aVwDm6l7RdXFB7RqxVrCf3bCosif0Fkg'
 
 const CreateProductTest = {
-    name: 'TestProduct10',
-    qtd: '10',
+    name: 'TestProduct11',
+    qtd: '15',
     cat_id: '6616ca6fc0c1625999b9ef7f'
 }
 
@@ -141,20 +141,24 @@ describe('### Tests for unauthenticated routes', async(t) => {
         });
    });
     describe('##Bad Request', async(t) => {
-       /* test('# no token', async(t) => {
+        test('# no token', async(t) => {
             const app = await build(options);
     
             t.after(async() => {
                 await app.close();
             });
-            
+
             const response = await app.inject({
-                url: '/*',
-                
+                method: 'PUT',
+                url: '/categories/6616ca5a7c88395ea9a658a9',
+                body: UpdateCategorieTest,
+                headers: {
+                    
+                }
             });
             equal(response.statusCode, 401);
         });
-
+        
         test('# invalid token', async(t) => {
             const app = await build(options);
     
@@ -162,14 +166,20 @@ describe('### Tests for unauthenticated routes', async(t) => {
                 await app.close();
             });
 
+            let originalString = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWF0aGV1cyIsImlhdCI6MTcxMjY5Nzc4MX0.tb86bidxFw0aVwDm6l7RdXFB7RqxVrCf3bCosif0Fkg";
+            let newString = originalString.replace("e", "");
+
             const response = await app.inject({
-                url: '/*',
+                method: 'PUT',
+                url: '/categories/6616ca5a7c88395ea9a658a9',
+                body: UpdateCategorieTest,
                 headers: {
-                    'x-access-token': !jwtValue
+                    'x-access-token': newString
                 }
             });
             equal(response.statusCode, 401);
         });
+        
         test('# Not found', async(t) => {
             const app = await build(options);
     
@@ -182,7 +192,7 @@ describe('### Tests for unauthenticated routes', async(t) => {
                 url: '/notfound'
             });
             equal(response.statusCode, 404);
-        });*/
+        });
 
         test('# Already exists', async(t) => {
             const app = await build(options);
@@ -266,7 +276,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'DELETE',
-                url: '/categories/6619742a5eec49ed7f6eabcf',
+                url: '/categories/661d649a12b97fdbce8aa7b1',
                 headers: {
                     'x-access-token': jwtValue
                 }
@@ -321,7 +331,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'DELETE',
-                url: '/products/6619742a5eec49ed7f6eabd0',
+                url: '/products/66197b2a04864e4f88a09220',
                 headers: {
                     'x-access-token': jwtValue
                 }
