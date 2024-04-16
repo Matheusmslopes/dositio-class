@@ -1,7 +1,19 @@
 /** @type{import('fastify').FastifyPluginAsync<>} */
 export default async function auth(app, options) {
     
-    app.post('/auth', (req, rep) => {
+    app.post('/auth', {
+        schema: {
+            body: {
+                type: 'object',
+                properties: {
+                    _id: { type: 'string' },
+                    name: { type: 'string' },
+                    password: {type: 'string'}
+                },
+                required: ['name', 'password']
+            }
+        }
+    },(req, rep) => {
         let user = req.body;
         req.log.info(`Login for user ${user.username}`);
         //check login details
