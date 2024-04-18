@@ -4,4 +4,6 @@ export const AUTH_INVALID_TOKEN = createError('AUTH_INVALID_TOKEN', 'The token p
 
 export const NOT_FOUND = createError('NOT_FOUND', 'The requested resource could not be found', 404);
 
-export const ALREADY_EXISTS = createError('ALREADY_EXISTS', 'This resource already exists in database', 412)
+export const ALREADY_EXISTS = createError('ALREADY_EXISTS', 'This resource already exists in database', 412);
+
+export const NOT_ADMIN = createError('NOT_ADMIN', 'Only administrators can perform this function', 401);

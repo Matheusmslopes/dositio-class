@@ -12,18 +12,24 @@ export default async function user(app, options) {
                 properties: {
                     id: { type: 'integer' },
                     name: { type: 'string' },
-                    password: {type: 'string'}
+                    password: {type: 'string'},
+                    isAdmin: {type: 'boolean'}
                 },
-                required: ['name', 'password']
+                required: ['name', 'password', 'isAdmin']
             }
         },
         config: {
             requireAuthentication: true
         }
     }, async (req, rep) => {
-        let user = req.body;
+        let name = req.body.name;
+        let passwd = req.body.password;
+        let isAdm = req.body.isAdmin;
 
-        await users.insertOne(user);
+        let jwtToken = app.jwt.sign(req.body);
+        console.log(jwtToken);
+
+        await users.insertOne({name: name, password: passwd, isAdmin: isAdm, jwtToken: jwtToken});
 
         return rep.code(201).send();
     });

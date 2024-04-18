@@ -44,7 +44,8 @@ export default async function categories(app, options) {
             }
         },
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            isAdmin: true
         }
     }, async (req, rep) => {
         let category = req.body;
@@ -55,7 +56,8 @@ export default async function categories(app, options) {
     });
 
     app.delete('/categories/:id', { config: {
-        requireAuthentication: true
+        requireAuthentication: true,
+        isAdmin: true
     }}, async (req, rep) => {
         let id = req.params.id;
         let categorie = await categories.deleteOne({_id: new app.mongo.ObjectId(id)});
@@ -64,7 +66,8 @@ export default async function categories(app, options) {
     });
 
     app.put('/categories/:id', { config: {
-        requireAuthentication: true
+        requireAuthentication: true,
+        isAdmin: true
         }
         },async (req, rep) => {
         let id = req.params.id;

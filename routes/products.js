@@ -36,7 +36,8 @@ export default async function products(app, options) {
             }
         },
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            isAdmin: true
         }
     }, async (req, rep) => {
         let product = req.body;
@@ -48,7 +49,8 @@ export default async function products(app, options) {
 
     
     app.delete('/products/:id', { config: {
-        requireAuthentication: true
+        requireAuthentication: true,
+        isAdmin: true
     }}, async (req, rep) => {
         let id = req.params.id;
         let product = await products.deleteOne({_id: new app.mongo.ObjectId(id)});
@@ -57,7 +59,8 @@ export default async function products(app, options) {
     });
 
     app.put('/products/:id', { config: {
-        requireAuthentication: true
+        requireAuthentication: true,
+        isAdmin: true
     }}, async (req, rep) => {
         let id = req.params.id;
         let product = req.body;
