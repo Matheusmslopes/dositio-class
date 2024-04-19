@@ -23,13 +23,11 @@ export default async function user(app, options) {
         }
     }, async (req, rep) => {
         let name = req.body.name;
-        let passwd = req.body.password;
         let isAdm = req.body.isAdmin;
 
         let jwtToken = app.jwt.sign(req.body);
-        console.log(jwtToken);
 
-        await users.insertOne({name: name, password: passwd, isAdmin: isAdm, jwtToken: jwtToken});
+        await users.insertOne({name: name, isAdmin: isAdm, jwtToken: jwtToken});
 
         return rep.code(201).send();
     });
