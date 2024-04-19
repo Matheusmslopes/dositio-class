@@ -3,28 +3,23 @@ import { equal, deepEqual } from 'node:assert';
 import { build, options } from './app.js';
 import { request } from 'node:http';
 
-const jwtValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWF0aGV1cyIsImlhdCI6MTcxMjY5Nzc4MX0.tb86bidxFw0aVwDm6l7RdXFB7RqxVrCf3bCosif0Fkg'
+const jwtValue = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWF0aGV1cyIsInBhc3N3b3JkIjoiQWJjZEAxMjM0IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzEzNTQ4ODA0fQ.83nRyKJUmL9bSGo3FhPOByRdZBdXraUqBo94TpNmL7c'
 
 const CreateProductTest = {
-    name: 'TestProduct11',
+    name: 'TestProduct10',
     qtd: '15',
     cat_id: '6616ca6fc0c1625999b9ef7f'
-}
-
-const CreateCategorieTest = {
-    name: 'TestCategorie',
-    img_url: 'https://www.modernenglishteacher.com/media/26176/rsz_testing_2.jpg'
-}
-
-const CreateUserTest = {
-    name: 'TestUser67',
-    password: 'ABCDe1234567'
 }
 
 const UpdateProductTest = {
     name: 'TestProduct700',
     qtd: '10',
-    cat_id: '6616ca6fc0c1625999b9ef7f'
+    cat_id: '6622ae72a178b9ca04a3ce01'
+}
+
+const CreateCategorieTest = {
+    name: 'TestCategorie',
+    img_url: 'https://www.modernenglishteacher.com/media/26176/rsz_testing_2.jpg'
 }
 
 const UpdateCategorieTest = {
@@ -33,10 +28,16 @@ const UpdateCategorieTest = {
     
 }
 
+const CreateUserTest = {
+    name: 'TestUser67',
+    password: 'ABCDe1234567',
+    isAdmin: false
+}
+
 const AlreadyExists = {
     name: 'TestProduct',
-    qtd: 100,
-    cat_id: '6616c8ef2550bf9d500d198d'
+    qtd: 10,
+    cat_id: '6622ae72a178b9ca04a3ce01'
 }
 
 describe('### Tests for server config', async(t) => {
@@ -81,7 +82,7 @@ describe('### Tests for unauthenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'GET',
-                url: '/products/6616ca5a7c88395ea9a658aa'
+                url: '/products/6622aecba178b9ca04a3ce07'
             });
             equal(response.statusCode, 200);
         });
@@ -107,7 +108,7 @@ describe('### Tests for unauthenticated routes', async(t) => {
             });
             const response = await app.inject({
                 method: 'GET',
-                url: '/categories/6616c923616ab9efb0a94e97'
+                url: '/categories/6622ae72a178b9ca04a3ce01'
             });
             equal(response.statusCode, 200);
         });
@@ -120,7 +121,7 @@ describe('### Tests for unauthenticated routes', async(t) => {
             });
             const response = await app.inject({
                 method: 'GET',
-                url: '/categories/:id/products'
+                url: '/categories/6622ae72a178b9ca04a3ce01/products'
             });
             equal(response.statusCode, 200);
         });
@@ -150,7 +151,7 @@ describe('### Tests for unauthenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'PUT',
-                url: '/categories/6616ca5a7c88395ea9a658a9',
+                url: '/categories/6622ae72a178b9ca04a3ce01',
                 body: UpdateCategorieTest,
                 headers: {
                     
@@ -171,7 +172,7 @@ describe('### Tests for unauthenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'PUT',
-                url: '/categories/6616ca5a7c88395ea9a658a9',
+                url: '/categories/6622ae72a178b9ca04a3ce01',
                 body: UpdateCategorieTest,
                 headers: {
                     'x-access-token': newString
@@ -208,7 +209,6 @@ describe('### Tests for unauthenticated routes', async(t) => {
                 headers: {
                     'x-access-token': jwtValue
                 }
-
             });
             equal(response.statusCode, 412);
         });
@@ -225,6 +225,24 @@ describe('### Tests for unauthenticated routes', async(t) => {
                 url: '/error'
             });
             equal(response.statusCode, 501);
+        });
+
+        test('# isAdmin', async(t) => {
+            const app = await build(options);
+
+            t.after(async() => {
+            await app.close();
+            });
+
+            const response = await app.inject({
+                method: 'POST',
+                url: '/categories',
+                body: CreateCategorieTest,
+                headers: {
+                    'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJwYXNzd29yZCI6IjEyMzQiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzNTQ5MTI3fQ.jD-gmov7oAjjxJINCT7whVhMlZ2M9-8L2vXWgskSaW8'
+                }
+            });
+            equal(response.statusCode, 401);
         });
     })
 });
@@ -258,7 +276,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'PUT',
-                url: '/categories/6616ca5a7c88395ea9a658a9',
+                url: '/categories/6622ae72a178b9ca04a3ce01',
                 body: UpdateCategorieTest,
                 headers: {
                     'x-access-token': jwtValue
@@ -276,7 +294,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'DELETE',
-                url: '/categories/661d649a12b97fdbce8aa7b1',
+                url: '/categories/6622b16b94acc0be32b0420c',
                 headers: {
                     'x-access-token': jwtValue
                 }
@@ -312,12 +330,11 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'PUT',
-                url: '/products/6616d5f4354be05aa2f2f9db',
+                url: '/products/6622aecba178b9ca04a3ce07',
                 body: UpdateProductTest,
                 headers: {
                     'x-access-token': jwtValue
                 }
-
             });
             equal(response.statusCode, 204);
         });
@@ -331,7 +348,7 @@ describe('### Tests for authenticated routes', async(t) => {
 
             const response = await app.inject({
                 method: 'DELETE',
-                url: '/products/66197b2a04864e4f88a09220',
+                url: '/products/6622b1d03db45ba3878133bd',
                 headers: {
                     'x-access-token': jwtValue
                 }
